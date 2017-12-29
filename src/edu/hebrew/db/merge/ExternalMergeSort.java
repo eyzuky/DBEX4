@@ -20,9 +20,14 @@ public class ExternalMergeSort implements IMergeSort {
     @Override
     public void sortFile(String in, String out, String tmpPath) {
     		this.tmpPath = tmpPath;
-    		createFirstFolder(in); // create first folder with smallest files
-    		mergeSort(); //merge all the small files that were created to a big sorted one recursively.
-    		flushPreviousDir();
+    		
+    		// create first folder with smallest files
+    		createFirstFolder(in); 
+    		
+    		//merge all the small files that were created to a big sorted one recursively.
+    		//this function will write the sorted data to the out file.
+    		mergeSort(out); 
+    		
     }
     
     
@@ -51,21 +56,31 @@ public class ExternalMergeSort implements IMergeSort {
 		iteration++; //procceed to the next iteration
 		counter = 0; //I think this makes sense here
     }
+    
     /*
+     * 
      * TODO - implement this function. 
+     * 
      * Assumption - 
      * the first folder already exists, with all the input file broken into sorted small files
      * 
+     * when function finishes running, the path out will contain the sorted 1 last file
      */
-    public void mergeSort() { 
+    public void mergeSort(String out) { 
+    		File file = new File(out); // write the end result to this file
     		
     }
 
     public void merge() {
     	
     }
+    
+    
+    
+    
+    
     //====================================================
-    // FILE UTILS
+    // FILE SYSTEM HELPER FUNCTIONS
     //====================================================
     public void createDirectoryForIteration() {
     		File dir = new File(this.tmpPath + "/" + String.valueOf(iteration));
@@ -91,9 +106,11 @@ public class ExternalMergeSort implements IMergeSort {
     			}
     		}
     }
-    //====================================================
-
     
+//====================================================
+//HELPER FUNCTIONS FOR CREATING THE FIRST ITERATION
+//====================================================
+
     public void createOneSortedFile(File tmpFile, ArrayList<String> chunk) {
     	try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(tmpFile));
@@ -109,20 +126,13 @@ public class ExternalMergeSort implements IMergeSort {
 			e.printStackTrace();
 		}
     }
-    public void mergeToFiles(String first, String second) {
-    		if (second == null) {
-    			return;
-    		} else {
-    			
-    		}
-    }
+
     public ArrayList<String> sortChunk(ArrayList<String> chunk) {
     		ArrayList<String> toBeSorted = chunk;
     	    Collections.sort(toBeSorted);
     	    return toBeSorted;
     }
-    
- 
+
     public ArrayList<String> readNextChunk() {
     		if (didFinishReading) {
     			return null;
@@ -152,3 +162,4 @@ public class ExternalMergeSort implements IMergeSort {
     }
     
 }
+//====================================================
