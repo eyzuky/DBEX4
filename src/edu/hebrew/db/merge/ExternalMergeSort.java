@@ -12,13 +12,15 @@ public class ExternalMergeSort implements IMergeSort {
 	int counter = 0; 
 	int iteration = 0;
     BufferedReader buffer;
-    int chunkSize = 2;
+    int chunkSize = 100;
     boolean didFinishReading = false;
     String tmpPath;
     
     
     @Override
     public void sortFile(String in, String out, String tmpPath) {
+    		
+    		//save the temporary path
     		this.tmpPath = tmpPath;
     		
     		// create first folder with smallest files
@@ -69,13 +71,38 @@ public class ExternalMergeSort implements IMergeSort {
     public void mergeSort(String out) { 
     		File file = new File(out); // write the end result to this file
     		
+    		while(true) {
+    			MergeTwoFiles files = getNextFilesToMerge();
+    			if (files.file1 == null && files.file2 == null) {
+    				break;
+    			} else if (files.file1 != null && files.file2 == null) {
+    				//do something with 1 file (happens on the last file when we have odd ammount of files)
+    			} else if (files.file1 != null & files.file2 != null) {
+    				merge(files.file1, files.file2);
+    			}
+    		}
     }
-
-    public void merge() {
+    
+    public void merge(File file1, File file2) {
     	
     }
-    
-    
+    public MergeTwoFiles getNextFilesToMerge() {
+    	
+    		MergeTwoFiles files = new MergeTwoFiles();
+    		
+    		String path1 = getPath(iteration - 1, counter); //go to previous iteration and get the next files
+    		String path2 = getPath(iteration - 1, counter + 1);
+    		
+    		files.file1 = new File(path1);
+    		files.file2 = new File(path2);
+    		
+    		return files;
+    }
+    private class MergeTwoFiles {
+    		File file1;
+    		File file2;
+    		
+    }
     
     
     
