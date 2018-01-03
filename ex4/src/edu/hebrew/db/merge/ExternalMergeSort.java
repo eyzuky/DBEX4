@@ -33,30 +33,16 @@ public class ExternalMergeSort implements IMergeSort {
     		// create first folder with smallest files
     		createFirstFolder(in); 
     		
-    		mergeSort(0, arrayOfFiles.size());
 
     		
-    		//createDirectoryForIteration();
+    		createDirectoryForIteration();
     		//merge all the small files that were created to a big sorted one recursively.
     		//this function will write the sorted data to the out file.
-    	//	mergeSort(out); 
+    		mergeSort(out); 
     		System.out.println( (System.currentTimeMillis() - a) / 60000.0);
     }
     
-    public void  mergeSort(int leftStart, int rightEnd) {
-    		if (leftStart >= rightEnd) {
-    			return;
-    		}
-    		int middle = (leftStart + rightEnd) / 2;
-    		mergeSort(leftStart, middle);
-    		mergeSort(middle + 1, rightEnd);
-    		mergeHalves(leftStart, rightEnd);
-    }
-    
-    public void mergeHalves(int leftStart, int rightEnd) {
-    		
-    }
-    
+
     /*
      * function that creates a folder with the smallest files
      */
@@ -96,12 +82,12 @@ public class ExternalMergeSort implements IMergeSort {
     		File file = new File(out); // write the end result to this file
     		while(counter > 0) {
     			
-    			MergeTwoFiles files = getNextFilesToMerge();
+    			MergeTwoFiles files = getNextFilesToMerge(); //MOR - THIS HAS TO RETURN AN ARRAY OF FILES INSTEAD OF CLASS WITH 2 FILES, IF YOU WANT TO INCREASE TO MORE FILES
     			String pathToOutMerge = getPath(iteration, counterForWrite);
     			counterForWrite++;
     			if (files.file1 == null && files.file2 == null) {
     				System.out.println("-"+counter);
-    				counter /= 2;
+    				counter /= 2; //MOR - CHANGE THIS IF YOU INCREASE FROM 2 FILES TO MORE!
     				counterForRead = 0;
     				counterForWrite = 0;
     				if (counter == 0) {
@@ -125,7 +111,7 @@ public class ExternalMergeSort implements IMergeSort {
     		
     }
     
-    public void merge(File file1, File file2, File outFile) {
+    public void merge(File file1, File file2, File outFile) { //MOR - THIS HAS TO CHANGE TO MAYBE GET AN ARRAY OF FILES IF YOU WANT TO INCREASE TO MORE THAN 2 FILES
     		try {
     			//read the files into array line by line lexicographically 
 				FileReader reader1 = new FileReader(file1);
@@ -142,7 +128,7 @@ public class ExternalMergeSort implements IMergeSort {
 
 					while(line1 != null || line2 != null) {
 						if (line1 != null && line2 != null) {
-							int answer = line1.compareTo(line2);
+							int answer = line1.compareTo(line2); //MOR - FOR EXAMPLE, HERE YOU SHOULD COMPARE BETWEEN MULTIPLE LINES AND NOT ONLY 2, MAYBE YOU CAN SORT THEM AND TAKE THE FIRST OR SOMETHING
 							if (answer < 0) {
 								bw.write(line1);
 								bw.newLine();
@@ -152,7 +138,7 @@ public class ExternalMergeSort implements IMergeSort {
 								bw.newLine();
 								line2 = br2.readLine(); //read next line 
 							}
-						} else if (line1 == null && line2 != null){
+						} else if (line1 == null && line2 != null){ //MOR - MAKE SURE YOU CHECK ALL SITUATIONS IF YOU INCREASE FILES AMOUNT
 							bw.write(line2);
 							bw.newLine();
 							line2 = br2.readLine(); //read only next in file 2!3499105\\\///
@@ -176,7 +162,7 @@ public class ExternalMergeSort implements IMergeSort {
 				e.printStackTrace();
 			}
     }
-    public MergeTwoFiles getNextFilesToMerge() {
+    public MergeTwoFiles getNextFilesToMerge() { //MOR - THIS SHOULD RETURN AN ARRAY OF FILES
     		MergeTwoFiles files = new MergeTwoFiles();
     		
     		String path1 = getPath(iteration - 1, counterForRead);//go to previous iteration and get the next files
@@ -222,7 +208,7 @@ public class ExternalMergeSort implements IMergeSort {
 			}	
 	}
     
-    public void transfer(File file) {
+    public void transfer(File file) { //MOR - THIS FUNCTION TRANSFERS A FILE TO THE NEXT ITERATION IF IT HAD NO PARTNER TO MERGE (E.G ODD AMOUNT OF FILES), MAKE SURE YOU UPDATE IT
     		
     		FileReader reader;
 			String dirPath = this.tmpPath + String.valueOf(iteration);
